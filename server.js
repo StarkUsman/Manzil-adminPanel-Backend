@@ -337,9 +337,10 @@ async function newEmergencyHit(){
 
 app.put('/updateFareControls', async(req, res) => {
     try{
-        const controlsID = 'pwtBLhaY1nO361QMpCms';
+        const controlsID = 'AvSIjnKaS5vdhJmFZny2';
         const litersPerMeter = req.body.litersPerMeter ? req.body.litersPerMeter : null;
         const petrolRate = req.body.petrolRate || null;
+        const vehicle = req.body.vehicle || null;
 
         const controlsRef = db.collection('controls').doc(controlsID);
         const controlsSnapshot = await controlsRef.get();
@@ -350,7 +351,8 @@ app.put('/updateFareControls', async(req, res) => {
         const controlsData = controlsSnapshot.data();
         const updatedControls = {
             litersPerMeter: litersPerMeter || controlsData.litersPerMeter,
-            petrolRate: petrolRate || controlsData.petrolRate
+            petrolRate: petrolRate || controlsData.petrolRate,
+            vehicle: vehicle || controlsData.vehicle
         };
         await controlsRef.update(updatedControls);
         console.log('Method Name: updateFare()  |  Fare updated successfully');
@@ -363,7 +365,7 @@ app.put('/updateFareControls', async(req, res) => {
 
 app.get('/getFareControls', async(req, res) => {
     try{
-        const controlsID = 'pwtBLhaY1nO361QMpCms';
+        const controlsID = 'AvSIjnKaS5vdhJmFZny2';
         const controlsRef = db.collection('controls').doc(controlsID);
         const controlsSnapshot = await controlsRef.get();
         if(!controlsSnapshot.exists){
@@ -373,7 +375,8 @@ app.get('/getFareControls', async(req, res) => {
         const controlsData = controlsSnapshot.data();
         const controls = {
             litersPerMeter: controlsData.litersPerMeter || null,
-            petrolRate: controlsData.petrolRate || null
+            petrolRate: controlsData.petrolRate || null,
+            vehicle: controlsData.vehicle || null
         };
         console.log('Method Name: getControls()  |  Controls fetched successfully');
         res.json(controls);
